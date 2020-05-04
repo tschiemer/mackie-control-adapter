@@ -13,7 +13,6 @@ namespace RMETotalMixMidiAdapter {
       return Key;
     }
 
-
     void Echo::setRMETotalMixImpl(RMETotalMix * rmeTotalMix){
       rmeTotalMix->setRMEUnitCount(2);
     }

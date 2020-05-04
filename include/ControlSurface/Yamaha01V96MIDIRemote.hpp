@@ -21,6 +21,9 @@ namespace RMETotalMixMidiAdapter {
 
         MidiInterface * MidiInterfaceRef = NULL;
 
+        int DeviceId = 0;
+
+
         Yamaha01V96MIDIRemote(int argc, char * argv[]);
 
         void setRMETotalMixImpl(RMETotalMix * rmeTotalMix);
@@ -36,6 +39,16 @@ namespace RMETotalMixMidiAdapter {
 
         std::string getKey();
 
+        int getDeviceId(){
+          return DeviceId;
+        }
+
+        void setDeviceId(int deviceId){
+          assert( deviceId > 0 );
+          assert( deviceId < 16 );
+
+          DeviceId = deviceId;
+        }
 
       protected:
 
@@ -49,6 +62,8 @@ namespace RMETotalMixMidiAdapter {
 
         void setMasterLevel(MidiMessage::U14 level);
 
+        void selectChannel(int channel);
+        void setMuteChannel(int channel, bool mute);
     };
 
   }

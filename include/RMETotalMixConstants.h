@@ -20,7 +20,7 @@
 // static const constexpr MidiMessage::U7 AbsoluteSubmitSelectControllerOffset;
 
 
-    static const constexpr MidiMessage::U7 NoteChannel = 1;
+    static const constexpr MidiMessage::U7 NoteChannel = 0;
 
     static const constexpr MidiMessage::U7 NoteBankLeft = 46;
     static const constexpr MidiMessage::U7 NoteBankRight = 47;
@@ -34,7 +34,7 @@
     static const constexpr MidiMessage::U7 AbsoluteSubmixSendLevelChannelOffset = 9;
     static const constexpr MidiMessage::U7 AbsoluteChannelControllerOffset = 102;
 
-    static const constexpr MidiMessage::U7 AbsoluteSubmixSelectChannelOffset = 13;
-    static const constexpr MidiMessage::U7 AbsoluteSubmitSelectControllerOffset = 104;
+    static const constexpr MidiMessage::U7 AbsoluteSubmixSelectChannelOffset = 12;
+    static const constexpr MidiMessage::U7 AbsoluteSubmitSelectControllerOffset = 102;
 
 #endif /* RME_TOTALMIX_CONSTANTS_H */

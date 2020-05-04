@@ -2,11 +2,6 @@
 
 namespace RMETotalMixMidiAdapter {
 
-  //  AbstractControlSurface::AbstractControlSurface(){
-  //   RMETotalMixRef = NULL;
-  //   Name = "";
-  //   State = StateOff;
-  // }
 
   void AbstractControlSurface::setRMETotalMix(RMETotalMix * rmeTotalMix){
     assert( State == StateOff );

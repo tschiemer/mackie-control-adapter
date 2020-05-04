@@ -152,7 +152,7 @@ namespace RMETotalMixMidiAdapter{
     }
 
     int controlUnit = ch / 8;
-    int channelOfUnit = (ch % 8) + 1;
+    int channelOfUnit = (ch % 8);
     int value = level > MidiMessage::MaxU14 ? MidiMessage::MaxU14 : level;
 
     assert( controlUnit <= RMEUnitCount );
@@ -234,6 +234,8 @@ namespace RMETotalMixMidiAdapter{
     if (State != StateRunning){
       return;
     }
+
+    ch += 2;
 
     int channel = (ch / 16) + AbsoluteSubmixSelectChannelOffset;
     int cc = (ch % 16) + AbsoluteSubmitSelectControllerOffset;

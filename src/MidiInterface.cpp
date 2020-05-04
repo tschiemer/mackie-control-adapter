@@ -38,7 +38,7 @@ namespace RMETotalMixMidiAdapter{
     From->openVirtualPort("From " + Name);
     From->setCallback( rtMidiCallback, this );
     // Don't ignore sysex, timing, or active sensing messages.
-    From->ignoreTypes( true, true, true );
+    From->ignoreTypes( false, false, false );
 
 
     To = new RtMidiOut();
