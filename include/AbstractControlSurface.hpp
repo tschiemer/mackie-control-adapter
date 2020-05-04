@@ -38,6 +38,8 @@ namespace RMETotalMixMidiAdapter {
 
     public:
 
+      virtual ~AbstractControlSurface(){};
+
       RMETotalMix * getRMETotalMix() { return RMETotalMixRef; };
 
       void setRMETotalMix(RMETotalMix * rmeTotalMix);
