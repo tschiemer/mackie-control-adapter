@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <getopt.h>
+#include <csignal>
 
 using namespace RMETotalMixMidiAdapter;
 
@@ -9,6 +10,9 @@ using namespace RMETotalMixMidiAdapter;
 std::string sessionName = "";
 AbstractControlSurface * controlSurface = NULL;
 RMETotalMix * rmeTotalMix = NULL;
+
+int sigintTicks = 0;
+volatile bool Running = false;
 
 void printHelp( void ) {
     printf("Usage:\n");
@@ -24,6 +28,30 @@ void printControlSurfaces( void ){
     for(int i = 0; i < ControlSurfaceCount; i++){
       std::cout << ControlSurfaceList[i].Key << std::endl;
     }
+}
+
+void SignalHandler(int signal)
+{
+  // if (SIG)
+  sigintTicks++;
+
+  if (sigintTicks == 1){
+    std::cerr << "Press CTRL-C again to quit." << std::endl;
+    return;
+  }
+
+  // Attempt to gracefully stop process.
+  Running = false;
+
+  // Force quit if necessary
+  if (sigintTicks > 2){
+    exit(EXIT_FAILURE);
+  }
+}
+
+void setupSignalHandler(){
+  sigintTicks = 0;
+  std::signal(SIGINT, SignalHandler);
 }
 
 int main(int argc, char * argv[], char * env[]){
@@ -110,6 +138,8 @@ int main(int argc, char * argv[], char * env[]){
     exit(EXIT_FAILURE);
   }
 
+
+
   controlSurface = controlSurfaceFactory(argc - optind, &argv[optind]);
 
   rmeTotalMix = new RMETotalMix();
@@ -120,16 +150,17 @@ int main(int argc, char * argv[], char * env[]){
   rmeTotalMix->start();
   controlSurface->start();
 
-  std::cerr << "\nProcessing.. (press <enter> to quit)\n";
-  char input;
-  std::cin.get(input);
+  setupSignalHandler();
+  std::cerr << "Press CTRL-C twice for graceful shutdown." << std::endl;
+
+  Running = true;
+  while(Running){}
 
   rmeTotalMix->stop();
   controlSurface->stop();
 
   delete rmeTotalMix;
   delete controlSurface;
-
 
   return 0;
 }
