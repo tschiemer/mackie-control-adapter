@@ -1,2 +1,4 @@
-# mackie-control-adapter
-Maps custom control surfaces to Mackie Control surfaces (with RME Totalmix in mind)
+# rme-totalmix-midi-adapter
+Maps custom control surfaces to RME Totalmix's MIDI Controls
+
+*Work in Progress*
