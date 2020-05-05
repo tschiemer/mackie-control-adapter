@@ -3,6 +3,7 @@
 
 #include <AbstractControlSurface.hpp>
 #include <MidiInterface.hpp>
+#include <time_helpers.h>
 
 #include <RtMidi.h>
 
@@ -13,25 +14,46 @@ namespace RMETotalMixMidiAdapter {
 
     class Yamaha01V96MIDIRemote : virtual AbstractControlSurface {
 
-      public:
-
-        // static const constexprt char Channel
-
       protected:
 
         MidiInterface * MidiInterfaceRef = NULL;
 
         int DeviceId = 0;
 
+        // channel 0-15 + master/stereo
+        timestamp_t ChannelActivityTimestampList[17];
+
+        int CurrentBank = 0;
+
+        timestamp_t LastPing = 0;
 
         Yamaha01V96MIDIRemote(int argc, char * argv[]);
+
+
+
+        void resetChannelActivityTimestamps();
+        // void setChannelActivityTimestamp(int channel){
+        //   assert( channel < 17 );
+        //   ChannelActivityTimestampList[channel] = ;
+        // }
+        bool isChannelBlocked(int channel);
 
         void setRMETotalMixImpl(RMETotalMix * rmeTotalMix);
 
         static void didReceiveMessageCallback(double deltatime, std::vector< unsigned char > *message, MidiInterface * midiInterface, void * yamaha01V96MIDIRemote);
 
 
+
+
+        void onConnected();
+        void onDisconnected();
+        void onPing();
+
+        void queryCurrentSelect();
+        void queryCurrentBank();
+
       public:
+
 
         static constexpr const char * Key = "Yamaha01V96-MIDI-Remote";
 
@@ -56,6 +78,15 @@ namespace RMETotalMixMidiAdapter {
         void stopImpl();
 
       public:
+
+        bool isConnected(){
+          timestamp_t now = getMicrosecondTimestamp();
+          return (now - LastPing < 500000);
+        }
+
+        void onRMEPing();
+        void onRMEConnected();
+        void onRMEDisconnected();
 
         void setSendLevel(int channel, MidiMessage::U14 level);
         // void didSelectSubmix(int channel);

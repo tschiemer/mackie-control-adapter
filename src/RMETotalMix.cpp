@@ -14,6 +14,12 @@ namespace RMETotalMixMidiAdapter{
         return;
       }
 
+      // // debug output
+      // for (int i = 0; i < message->size(); i++){
+      //   std::cout << std::hex << (int)message->at(i) << " ";
+      // }
+      // std::cout << std::endl;
+
       RMETotalMix * self = (RMETotalMix*)rmeTotalMix;
 
       std::string msg( message->begin(), message->end() );
@@ -22,8 +28,25 @@ namespace RMETotalMixMidiAdapter{
 
       memcpy(bytes, msg.c_str(), msg.size());
 
+      MidiMessage::U7 note = 0;
+      MidiMessage::U7 velocity = 0;
       MidiMessage::U7 channel = 0;
       MidiMessage::U14 level = 0;
+
+      static const constexpr uint8_t Ping[] = {0x9F, 0x7F, 0x5A};
+
+      if (std::memcmp(Ping, bytes, sizeof(Ping)) == 0){
+
+        if (self->isConnected() == false){
+          self->ControlSurfaceRef->onRMEConnected();
+        }
+
+        self->LastPing = getMicrosecondTimestamp();
+
+        // std::cout << "lastping = " << self->LastPing << std::endl;
+
+        self->ControlSurfaceRef->onRMEPing();
+      }
 
       if (MidiMessage::unpackPitchBendChange(bytes, msg.size(), &channel, &level)){
         if ( 0 <= channel && channel <= 7 ){

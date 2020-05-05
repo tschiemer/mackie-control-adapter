@@ -6,6 +6,7 @@
 
 #include <MidiMessage.h>
 #include <RtMidi.h>
+#include <time_helpers.h>
 
 #include <cassert>
 #include <vector>
@@ -37,7 +38,6 @@ namespace RMETotalMixMidiAdapter {
 
     protected:
 
-
       AbstractControlSurface * ControlSurfaceRef = NULL;
 
       int RMEUnitCount = 0;
@@ -46,6 +46,8 @@ namespace RMETotalMixMidiAdapter {
       std::string Name = "";
 
       State_t State = StateOff;
+
+      timestamp_t LastPing = 0;
 
       static void didReceiveMessageCallback(double deltatime, std::vector< unsigned char > *message, MidiInterface * midiInterface, void * rmeTotalMix);
 
@@ -100,6 +102,10 @@ namespace RMETotalMixMidiAdapter {
       void start();
       void stop();
 
+      bool isConnected(){
+        timestamp_t now = getMicrosecondTimestamp();
+        return (now - LastPing < 1000);
+      }
 
         /* Navigation/Control */
       void shiftChannels(int n);

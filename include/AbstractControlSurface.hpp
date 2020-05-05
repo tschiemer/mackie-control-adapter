@@ -8,6 +8,8 @@
 
 #include <MidiMessage.h>
 
+#include <time_helpers.h>
+
 namespace RMETotalMixMidiAdapter {
 
   class RMETotalMix;
@@ -34,7 +36,7 @@ namespace RMETotalMixMidiAdapter {
 
       State_t State = StateOff;
 
-      // AbstractControlSurface();
+      timestamp_t LastRMEPing = 0;
 
     public:
 
@@ -94,9 +96,14 @@ namespace RMETotalMixMidiAdapter {
       virtual void startImpl(){};
       virtual void stopImpl(){};
 
+
     public:
 
       virtual std::string getKey() { return "Abstract Control Interface"; };
+
+      virtual void onRMEConnected(){};
+      virtual void onRMEDisconnected(){};
+      virtual void onRMEPing(){};
 
       virtual void setSendLevel(int channel, MidiMessage::U14 level) {};
       // virtual void didSelectSubmix(int channel) {};
