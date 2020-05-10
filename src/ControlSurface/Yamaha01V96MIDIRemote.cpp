@@ -187,9 +187,9 @@ namespace RMETotalMixMidiAdapter {
 
       std::string portName;
       if (Name != ""){
-        portName = Name + " / 01V96 ";
+        portName = Name + " / 01V96";
       } else {
-        portName = "01V96 ";
+        portName = "01V96";
       }
 
       MidiInterfaceRef = new MidiInterface( didReceiveMessageCallback, 0, portName, this);
