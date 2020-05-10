@@ -30,7 +30,12 @@ namespace RMETotalMixMidiAdapter {
 
     bool Yamaha01V96MIDIRemote::isChannelBlocked(int channel){
       timestamp_t now = getMicrosecondTimestamp();
-      return (now - ChannelActivityTimestampList[channel] < 10000);
+      timestamp_t delta = now - ChannelActivityTimestampList[channel];
+      // if (delta < 10000){
+      //   std::cout << "blocked " << delta << std::endl;
+      // }
+      return (delta < 10000);
+      // std::time_t now = std::time(nullptr);
     }
 
     void Yamaha01V96MIDIRemote::setRMETotalMixImpl(RMETotalMix * rmeTotalMix){
@@ -82,12 +87,12 @@ namespace RMETotalMixMidiAdapter {
       }
 
 
-            std::cout << "< len=" << message->size() << " ";
-                  // debug output
-                  for (int i = 0; i < message->size(); i++){
-                    std::cout << std::hex << (int)message->at(i) << " ";
-                  }
-                  std::cout << std::endl;
+            // std::cout << "< len=" << message->size() << " ";
+            //       // debug output
+            //       for (int i = 0; i < message->size(); i++){
+            //         std::cout << std::hex << (int)message->at(i) << " ";
+            //       }
+            //       std::cout << std::endl;
 
 
 
@@ -254,10 +259,11 @@ namespace RMETotalMixMidiAdapter {
 
 
     void Yamaha01V96MIDIRemote::setSendLevel(int channel, MidiMessage::U14 level){
-
+      // std::cout << "01v96.setSendLevel " << channel << " " << level << std::endl;
       // do not forward message if fader was before within X usec
       // Totalmix does echo any incoming messages which can lead to unwanted fader blocking
       if (isChannelBlocked(channel)){
+        // std::cout << "BLOCKED" << std::endl;
         return;
       }
 
@@ -271,7 +277,7 @@ namespace RMETotalMixMidiAdapter {
     }
 
     void Yamaha01V96MIDIRemote::setMasterLevel(MidiMessage::U14 level){
-
+      // std::cout << "01v96.setMasterLevel " << level << std::endl;
       if (isChannelBlocked(16)){
         return;
       }

@@ -173,6 +173,7 @@ namespace RMETotalMixMidiAdapter{
     if (State != StateRunning){
       return;
     }
+    // std::cout << "rme.setRelativeSendLevel " << ch << " " << level << std::endl;
 
     int controlUnit = ch / 8;
     int channelOfUnit = (ch % 8);
@@ -191,6 +192,8 @@ namespace RMETotalMixMidiAdapter{
     if (State != StateRunning){
       return;
     }
+
+    // std::cout << "rme.setMasterSendLevel " << level << std::endl;
 
     int controlUnit = 0;
     int channelOfUnit = 9;

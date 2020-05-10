@@ -104,7 +104,7 @@ namespace RMETotalMixMidiAdapter {
 
       bool isConnected(){
         timestamp_t now = getMicrosecondTimestamp();
-        return (now - LastPing < 1000);
+        return (now - LastPing < 1000000);
       }
 
         /* Navigation/Control */
